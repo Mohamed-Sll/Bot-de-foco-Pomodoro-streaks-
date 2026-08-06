@@ -6,8 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class ConfigError(Exception):
     pass
+
 
 def _require(name: str) -> str:
     value = os.getenv(name)
@@ -15,41 +17,45 @@ def _require(name: str) -> str:
         raise ConfigError(f"Variavel de ambiente obrigatoria em falta: {name}")
     return value
 
+
 def _optional(name: str, default: str) -> str:
-    return os.getenv(name, default) 
+    return os.getenv(name, default)
+
 
 def _optional_int(name: str, default: int) -> int:
     raw = os.getenv(name)
     if raw is None:
         return default
-    try: 
+    try:
         return int(raw)
     except ValueError as exc:
         raise ConfigError(f'{name} deve ser um numero inteiro, recebi: {raw!r}') from exc
 
+
 @dataclass(frozen=True)
 class Settings:
-    bot_token: str 
+    bot_token: str
     webhook_url: str
     webhook_secret: str
     webhook_port: int
 
-    #base de dados:
+    # base de dados:
     database_url: str
 
-    #comportamento do bot:
+    # comportamento do bot:
     default_timezone: str
     min_focus_minutes: int
     max_focus_minutes: int
     default_break_minutes: int
     sweep_interval_seconds: int
 
-    #Ambiente:
+    # ambiente:
     environment: str
 
     @property
-    def is_prodution(self) -> bool:
+    def is_production(self) -> bool:
         return self.environment == 'production'
+
 
 def load_settings() -> Settings:
     settings = Settings(
@@ -67,9 +73,10 @@ def load_settings() -> Settings:
     )
     if settings.min_focus_minutes > settings.max_focus_minutes:
         raise ConfigError(
-            "MIN_FOCUS_MINUTES deve ser menor que MAX_FOCUS_MINUTES"
-            f"(recebi min={settings.min_focus_minutes}, max={settings.min_focus_minutes}, max={settings.max_focus_minutes})"
+            "MIN_FOCUS_MINUTES deve ser menor que MAX_FOCUS_MINUTES "
+            f"(recebi min={settings.min_focus_minutes}, max={settings.max_focus_minutes})"
         )
     return settings
 
-    settings = load_settings    
+
+settings = load_settings()

@@ -11,6 +11,9 @@ DEFAULT_FOCUS_MINUTES: Final[int] = 25
 DEFAULT_BREAK_MINUTES: Final[int] = 5
 DEFAULT_LONG_BREAK_MINUTES: Final[int] = 15
 
+# Alias for the short/regular break used across the codebase
+DEFAULT_SHORT_BREAK_MINUTES: Final[int] = DEFAULT_BREAK_MINUTES
+
 POMODORO_BEFORE_LONG_BREAK: Final[int] = 4
 
 MIN_MINUTES_TO_COUNT_FOR_STREAK: Final[int] = 10
