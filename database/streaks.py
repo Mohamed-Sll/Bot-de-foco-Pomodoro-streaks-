@@ -56,14 +56,6 @@ def get_streak(user_id: int) -> dict:
         return result
 
 
-def record_activity(user_id: int, activity_date: date, minutes: int) -> dict:
-    raise NotImplementedError(
-        "Ver streak_service.py — record_activity foi dividida em "
-        "upsert_daily_stats() e save_streak() abaixo, para separar "
-        "'calcular o streak' de 'gravar o streak'."
-    )
-
-
 def upsert_daily_stats(user_id: int, activity_date: date, minutes: int) -> None:
     with get_connection() as conn:
         cursor = conn.cursor()
