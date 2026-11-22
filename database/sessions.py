@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -24,10 +24,9 @@ def _ph() -> str:
 
 
 def _parse_timestamp(value) -> datetime:
-
-    if isinstance(value, datetime):
-        return value
-    return datetime.fromisoformat(str(value))
+    parsed = value if isinstance(value, datetime) else datetime.fromisoformat(str(value))
+    # CURRENT_TIMESTAMP grava UTC sem fuso; sem isto o sweep compara naive com aware e rebenta.
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
 
 
 def create_session(
